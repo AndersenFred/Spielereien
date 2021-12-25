@@ -1,6 +1,5 @@
 import random
 import numpy as np
-import sys
 def generator(x):
     s = []
     for i in range(x):
