@@ -1,13 +1,11 @@
 import random
 import numpy as np
 def generator(x):
-    s = []
-    for i in range(x):
-        s.append(chr((int(random.random()*94)+33)))
     j = ""
-    for i in s:
-        j+=i
+    for i in range(x):
+        j+=(chr((int(random.random()*94)+33)))
     return j
+
 if __name__ == '__main__':
 
     while(True):
