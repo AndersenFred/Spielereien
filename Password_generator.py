@@ -3,7 +3,7 @@ import numpy as np
 def generator(x):
     s = []
     for i in range(x):
-        s.append(chr((int(random.random()*1000)%(126-33)+33)))
+        s.append(chr((int(random.random()*94)+33)))
     j = ""
     for i in s:
         j+=i
