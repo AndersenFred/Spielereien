@@ -11,13 +11,13 @@ class Rubics_two():
 
     def turn(self):
         front_after = (self.bottom[0],self.right[1],self.front[2],self.bottom[3])
-        Right_after = (self.back[0],self.back[1],self.right[2],self.right[3])
+        right_after = (self.back[0],self.back[1],self.right[2],self.right[3])
         up_after = (self.right[0], self.up[0],self.up[1],self.front[3])
         left_after = (self.front[1],self.left[2], self.left[3], self.front[0])
         back_after= (self.left[0], self.up[2],self.up[3], self.back[3])
         bottom_after = (self.back[2], self.bottom[1],self.bottom[2], self.left[1])
         self.front = front_after
-        self.right = Right_after
+        self.right = right_after
         self.up = up_after
         self.left =  left_after
         self.back = back_after
