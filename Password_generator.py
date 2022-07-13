@@ -9,8 +9,8 @@ import getpass as gp
 class manager(object):
     iv = b'idhnclx1734bs8av'
 
-    def __init__(self, file):
-        self.salt = ''
+    def __init__(self, file:str):
+        self._salt = ''
         master_password = gp.getpass('Your Password\n')
         r =  random.Random(master_password)
         if len(master_password) < 10:
@@ -18,23 +18,28 @@ class manager(object):
             sys.exit()
         elif len(master_password)< 32:
             for i in range(32):
-                self.salt += (chr((int(r.random()*(127-33))+33)))
-        elif len(master_password)<64:
-            for i in range(64):
-                self.salt += (chr((int(r.random()*(127-33))+33)))
+                self._salt += (chr((int(r.random()*(127-33))+33)))
         else:
             print('password to long')
             sys.exit()
-        self.master_password = master_password + self.salt[len(master_password):]
+        self.master_password = master_password + self._salt[len(master_password):]
         self.file = file
-        self.data = {}
-        print(master_password)
+        self._data = {}
+
+    @property
+    def data(self)->list:
+        return self._data.keys()
+
+
+    @property
+    def salt(self)-> None:
+        return
 
     def initialisiere():
         try:
             with open(file,'r') as f:
-                self.data = json.load(f)
-                if (hashlib.sha512((self.master_password).encode('utf-8')).hexdigest() != self.data['master_password']):
+                self._data = json.load(f)
+                if (hashlib.sha512((self.master_password).encode('utf-8')).hexdigest() != self._data['master_password']):
                     print('password not correct')
                     sys.exit()
         except FileNotFoundError:
@@ -43,22 +48,22 @@ class manager(object):
     def add_password(self, password_site:str, password:str) -> None:
         cipher = AES.new(key = self.master_password.encode(), mode = AES.MODE_CFB, iv = manager.iv)
         ct_bytes = cipher.encrypt(password.encode())
-        self.data[password_site] = b64encode(ct_bytes).decode('utf-8')
+        self._data[password_site] = b64encode(ct_bytes).decode('utf-8')
         self.save()
 
     def save(self) -> None:
         with open(self.file, 'w') as f:
-            json.dump(self.data,f, indent = 4)
+            json.dump(self._data,f, indent = 4)
 
     def read_password(self, password_site:str)-> None:
         cipher = AES.new(key = self.master_password.encode(), mode = AES.MODE_CFB, iv = manager.iv)
-        clipboard.copy(cipher.decrypt(b64decode(self.data[password_site])).decode())
+        clipboard.copy(cipher.decrypt(b64decode(self._data[password_site])).decode())
 
     def create_new_manager(self) -> None:
         self.cipher = AES.new(key = self.master_password.encode(), mode = AES.MODE_CFB, iv = manager.iv)
-        self.data= {'master_password':hashlib.sha512((self.master_password).encode('ascii')).hexdigest()}
+        self._data= {'master_password':hashlib.sha512((self.master_password).encode('ascii')).hexdigest()}
         with open(self.file, 'w') as f:
-            json.dump(self.data,f, indent = 4)
+            json.dump(self._data,f, indent = 4)
 
     @staticmethod
     def generator(x: int = 64) -> str:
@@ -80,14 +85,12 @@ class manager(object):
 
 maneger = manager('this.json')
 #maneger.create_new_manager()
-#maneger.add_password('Disney', 'Wasgeht')
-#print(maneger.read_password('Disney'))
-#maneger.add_password('Netflix', 'Nope__ist_kein_sicheres_passwort=')
-#x = manager.generator(64)
-#maneger.add_password('Keine Ahnung was noch', x)
-#maneger.add_password('Keine Ahnung was noch',x)
-#maneger.read_password('Keine Ahnung was noch')
-#print(x)
 
-print(len('idhnclx1734bs8av'))
+maneger.add_password('Disney', 'Hallo_Christof')
+#maneger.add_password('Netflix', 'Nope__ist_kein_sicheres_passwort=')
+x = "manager.generator(64)"
+maneger.add_password('Keine Ahnung was noch', x)
+#maneger.add_password('Keine Ahnung was noch',x)
+maneger.read_password('Keine Ahnung was noch')
+
 #Verhindern, dass Zeugs im log landet
