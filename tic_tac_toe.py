@@ -44,7 +44,7 @@ class field(object):
         while(True):
             try:
                 x = int(input('Eingabe\n'))
-                if (x <0 or 8<x) or self.field[int(x/3),x%3] != 0::
+                if (x <0 or 8<x) or self.field[int(x/3),x%3] != 0:
                     raise ValueError
                 self.field[int(x/3),x%3] = self.player
                 break
