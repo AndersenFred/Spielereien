@@ -51,7 +51,7 @@ class field(object):
             except ValueError:
                 print('Ungültige Eingabe')
 
-if __name__ == 'main':
+if __name__ == '__main__':
     field = field()
     while(not field.winning()):
         field.player_change()
